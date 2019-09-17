@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="saitynasModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="continent">
+    <Key>
+      <PropertyRef Name="name" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="teams" Relationship="Self.fk_continent" FromRole="continents" ToRole="teams" />
+  </EntityType>
+  <EntityType Name="player">
+    <Key>
+      <PropertyRef Name="username" />
+    </Key>
+    <Property Name="username" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="first_name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="last_name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="country" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="age" Type="Int32" Nullable="false" />
+    <Property Name="fk_team" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="team">
+    <Key>
+      <PropertyRef Name="name" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="wins" Type="Int32" Nullable="false" />
+    <Property Name="defeats" Type="Int32" Nullable="false" />
+    <Property Name="fk_continent" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="players" Relationship="Self.belongs" FromRole="teams" ToRole="players" />
+  </EntityType>
+  <Association Name="fk_continent">
+    <End Role="continents" Type="Self.continent" Multiplicity="1" />
+    <End Role="teams" Type="Self.team" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="continents">
+        <PropertyRef Name="name" />
+      </Principal>
+      <Dependent Role="teams">
+        <PropertyRef Name="fk_continent" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="belongs">
+    <End Role="teams" Type="Self.team" Multiplicity="1" />
+    <End Role="players" Type="Self.player" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="teams">
+        <PropertyRef Name="name" />
+      </Principal>
+      <Dependent Role="players">
+        <PropertyRef Name="fk_team" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="saitynasEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="continents" EntityType="Self.continent" />
+    <EntitySet Name="players" EntityType="Self.player" />
+    <EntitySet Name="teams" EntityType="Self.team" />
+    <AssociationSet Name="fk_continent" Association="Self.fk_continent">
+      <End Role="continents" EntitySet="continents" />
+      <End Role="teams" EntitySet="teams" />
+    </AssociationSet>
+    <AssociationSet Name="belongs" Association="Self.belongs">
+      <End Role="teams" EntitySet="teams" />
+      <End Role="players" EntitySet="players" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

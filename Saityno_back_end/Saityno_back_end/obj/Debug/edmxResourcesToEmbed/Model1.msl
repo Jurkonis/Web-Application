@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="saitynasModelStoreContainer" CdmEntityContainer="saitynasEntities1">
+    <EntitySetMapping Name="continents">
+      <EntityTypeMapping TypeName="saitynasModel.continent">
+        <MappingFragment StoreEntitySet="continents">
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="players">
+      <EntityTypeMapping TypeName="saitynasModel.player">
+        <MappingFragment StoreEntitySet="players">
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="first_name" ColumnName="first_name" />
+          <ScalarProperty Name="last_name" ColumnName="last_name" />
+          <ScalarProperty Name="country" ColumnName="country" />
+          <ScalarProperty Name="age" ColumnName="age" />
+          <ScalarProperty Name="fk_team" ColumnName="fk_team" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="teams">
+      <EntityTypeMapping TypeName="saitynasModel.team">
+        <MappingFragment StoreEntitySet="teams">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="wins" ColumnName="wins" />
+          <ScalarProperty Name="defeats" ColumnName="defeats" />
+          <ScalarProperty Name="fk_continent" ColumnName="fk_continent" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
