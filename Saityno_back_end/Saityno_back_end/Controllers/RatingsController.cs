@@ -12,44 +12,39 @@ using Saityno_back_end;
 
 namespace Saityno_back_end.Controllers
 {
-    public class ContinentsController : ApiController
+    public class RatingsController : ApiController
     {
         private saitynasEntities2 db = new saitynasEntities2();
 
-		// GET: api/Continents
-		public IEnumerable<continent> Getcontinents()
-		{
-			return db.continents.ToList(); ;
-		}
 
-		// GET: api/Continents/5
-		[ResponseType(typeof(continent))]
-        public IHttpActionResult Getcontinent(int id)
+        // GET: api/Ratings/5
+        [ResponseType(typeof(rating))]
+        public IHttpActionResult Getrating(int id)
         {
-            continent continent = db.continents.Find(id);
-            if (continent == null)
+            rating rating = db.ratings.Find(id);
+            if (rating == null)
             {
                 return NotFound();
             }
 
-            return Ok(continent);
+            return Ok(rating);
         }
 
-        // PUT: api/Continents/5
+        // PUT: api/Ratings/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult Putcontinent(int id, continent continent)
+        public IHttpActionResult Putrating(int id, rating rating)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != continent.id)
+            if (id != rating.id)
             {
                 return BadRequest();
             }
 
-            db.Entry(continent).State = EntityState.Modified;
+            db.Entry(rating).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +52,7 @@ namespace Saityno_back_end.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!continentExists(id))
+                if (!ratingExists(id))
                 {
                     return NotFound();
                 }
@@ -70,35 +65,35 @@ namespace Saityno_back_end.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Continents
-        [ResponseType(typeof(continent))]
-        public IHttpActionResult Postcontinent(continent continent)
+        // POST: api/Ratings
+        [ResponseType(typeof(rating))]
+        public IHttpActionResult Postrating(rating rating)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.continents.Add(continent);
+            db.ratings.Add(rating);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = continent.id }, continent);
+            return CreatedAtRoute("DefaultApi", new { id = rating.id }, rating);
         }
 
-        // DELETE: api/Continents/5
-        [ResponseType(typeof(continent))]
-        public IHttpActionResult Deletecontinent(int id)
+        // DELETE: api/Ratings/5
+        [ResponseType(typeof(rating))]
+        public IHttpActionResult Deleterating(int id)
         {
-            continent continent = db.continents.Find(id);
-            if (continent == null)
+            rating rating = db.ratings.Find(id);
+            if (rating == null)
             {
                 return NotFound();
             }
 
-            db.continents.Remove(continent);
+            db.ratings.Remove(rating);
             db.SaveChanges();
 
-            return Ok(continent);
+            return Ok(rating);
         }
 
         protected override void Dispose(bool disposing)
@@ -110,9 +105,9 @@ namespace Saityno_back_end.Controllers
             base.Dispose(disposing);
         }
 
-        private bool continentExists(int id)
+        private bool ratingExists(int id)
         {
-            return db.continents.Count(e => e.id == id) > 0;
+            return db.ratings.Count(e => e.id == id) > 0;
         }
     }
 }

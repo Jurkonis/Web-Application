@@ -4,12 +4,15 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="a5c7fa1589a34a1eb8ae731e7891c4a6" Name="Diagram1">
-        <EntityTypeShape EntityType="saitynasModel.continent" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
+      <Diagram DiagramId="2920077b943243baa014c9f994b24db2" Name="Diagram1">
+        <EntityTypeShape EntityType="saitynasModel.continent" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="true" />
         <EntityTypeShape EntityType="saitynasModel.player" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="saitynasModel.team" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <AssociationConnector Association="saitynasModel.fk_continent" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="saitynasModel.rating" Width="1.5" PointX="3" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="saitynasModel.team" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="saitynasModel.user" Width="1.5" PointX="5.75" PointY="4.75" IsExpanded="true" />
+        <AssociationConnector Association="saitynasModel.belongs2" ManuallyRouted="false" />
         <AssociationConnector Association="saitynasModel.belongs" ManuallyRouted="false" />
+        <AssociationConnector Association="saitynasModel.belongs1" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

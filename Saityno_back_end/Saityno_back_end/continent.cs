@@ -20,6 +20,7 @@ namespace Saityno_back_end
             this.teams = new HashSet<team>();
         }
     
+        public int id { get; set; }
         public string name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -12,17 +12,11 @@ namespace Saityno_back_end
     using System;
     using System.Collections.Generic;
     
-    public partial class player
+    public partial class user
     {
         public int id { get; set; }
         public string username { get; set; }
-        public string first_name { get; set; }
-        public string last_name { get; set; }
-        public string country { get; set; }
-        public int age { get; set; }
-        public int fk_team { get; set; }
-        public Nullable<int> fk_rating { get; set; }
-    
-        public virtual rating rating { get; set; }
+        public string password { get; set; }
+        public int userlevel { get; set; }
     }
 }

@@ -14,17 +14,17 @@ namespace Saityno_back_end.Controllers
 {
     public class PlayersController : ApiController
     {
-        private saitynasEntities1 db = new saitynasEntities1();
+        private saitynasEntities2 db = new saitynasEntities2();
 
-        // GET: api/players
+        // GET: api/Players
         public IEnumerable<player> Getplayers()
         {
             return db.players.ToList();
         }
 
-        // GET: api/players/5
+        // GET: api/Players/5
         [ResponseType(typeof(player))]
-        public IHttpActionResult Getplayer(string id)
+        public IHttpActionResult Getplayer(int id)
         {
             player player = db.players.Find(id);
             if (player == null)
@@ -35,16 +35,16 @@ namespace Saityno_back_end.Controllers
             return Ok(player);
         }
 
-        // PUT: api/players/5
+        // PUT: api/Players/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult Putplayer(string id, player player)
+        public IHttpActionResult Putplayer(int id, player player)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != player.username)
+            if (id != player.id)
             {
                 return BadRequest();
             }
@@ -70,7 +70,7 @@ namespace Saityno_back_end.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/players
+        // POST: api/Players
         [ResponseType(typeof(player))]
         public IHttpActionResult Postplayer(player player)
         {
@@ -80,29 +80,14 @@ namespace Saityno_back_end.Controllers
             }
 
             db.players.Add(player);
+            db.SaveChanges();
 
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateException)
-            {
-                if (playerExists(player.username))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtRoute("DefaultApi", new { id = player.username }, player);
+            return CreatedAtRoute("DefaultApi", new { id = player.id }, player);
         }
 
-        // DELETE: api/players/5
+        // DELETE: api/Players/5
         [ResponseType(typeof(player))]
-        public IHttpActionResult Deleteplayer(string id)
+        public IHttpActionResult Deleteplayer(int id)
         {
             player player = db.players.Find(id);
             if (player == null)
@@ -125,9 +110,9 @@ namespace Saityno_back_end.Controllers
             base.Dispose(disposing);
         }
 
-        private bool playerExists(string id)
+        private bool playerExists(int id)
         {
-            return db.players.Count(e => e.username == id) > 0;
+            return db.players.Count(e => e.id == id) > 0;
         }
     }
 }

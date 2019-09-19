@@ -13,10 +13,10 @@ namespace Saityno_back_end
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class saitynasEntities1 : DbContext
+    public partial class saitynasEntities2 : DbContext
     {
-        public saitynasEntities1()
-            : base("name=saitynasEntities1")
+        public saitynasEntities2()
+            : base("name=saitynasEntities2")
         {
         }
     
@@ -27,6 +27,8 @@ namespace Saityno_back_end
     
         public virtual DbSet<continent> continents { get; set; }
         public virtual DbSet<player> players { get; set; }
+        public virtual DbSet<rating> ratings { get; set; }
         public virtual DbSet<team> teams { get; set; }
+        public virtual DbSet<user> users { get; set; }
     }
 }

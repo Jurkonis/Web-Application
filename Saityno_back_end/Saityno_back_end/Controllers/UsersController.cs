@@ -12,44 +12,38 @@ using Saityno_back_end;
 
 namespace Saityno_back_end.Controllers
 {
-    public class ContinentsController : ApiController
+    public class UsersController : ApiController
     {
         private saitynasEntities2 db = new saitynasEntities2();
 
-		// GET: api/Continents
-		public IEnumerable<continent> Getcontinents()
-		{
-			return db.continents.ToList(); ;
-		}
-
-		// GET: api/Continents/5
-		[ResponseType(typeof(continent))]
-        public IHttpActionResult Getcontinent(int id)
+        // GET: api/Users/5
+        [ResponseType(typeof(user))]
+        public IHttpActionResult Getuser(int id)
         {
-            continent continent = db.continents.Find(id);
-            if (continent == null)
+            user user = db.users.Find(id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return Ok(continent);
+            return Ok(user);
         }
 
-        // PUT: api/Continents/5
+        // PUT: api/Users/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult Putcontinent(int id, continent continent)
+        public IHttpActionResult Putuser(int id, user user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != continent.id)
+            if (id != user.id)
             {
                 return BadRequest();
             }
 
-            db.Entry(continent).State = EntityState.Modified;
+            db.Entry(user).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +51,7 @@ namespace Saityno_back_end.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!continentExists(id))
+                if (!userExists(id))
                 {
                     return NotFound();
                 }
@@ -70,35 +64,35 @@ namespace Saityno_back_end.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Continents
-        [ResponseType(typeof(continent))]
-        public IHttpActionResult Postcontinent(continent continent)
+        // POST: api/Users
+        [ResponseType(typeof(user))]
+        public IHttpActionResult Postuser(user user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.continents.Add(continent);
+            db.users.Add(user);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = continent.id }, continent);
+            return CreatedAtRoute("DefaultApi", new { id = user.id }, user);
         }
 
-        // DELETE: api/Continents/5
-        [ResponseType(typeof(continent))]
-        public IHttpActionResult Deletecontinent(int id)
+        // DELETE: api/Users/5
+        [ResponseType(typeof(user))]
+        public IHttpActionResult Deleteuser(int id)
         {
-            continent continent = db.continents.Find(id);
-            if (continent == null)
+            user user = db.users.Find(id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            db.continents.Remove(continent);
+            db.users.Remove(user);
             db.SaveChanges();
 
-            return Ok(continent);
+            return Ok(user);
         }
 
         protected override void Dispose(bool disposing)
@@ -110,9 +104,9 @@ namespace Saityno_back_end.Controllers
             base.Dispose(disposing);
         }
 
-        private bool continentExists(int id)
+        private bool userExists(int id)
         {
-            return db.continents.Count(e => e.id == id) > 0;
+            return db.users.Count(e => e.id == id) > 0;
         }
     }
 }

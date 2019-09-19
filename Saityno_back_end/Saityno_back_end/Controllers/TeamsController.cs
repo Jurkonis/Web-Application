@@ -14,7 +14,7 @@ namespace Saityno_back_end.Controllers
 {
     public class TeamsController : ApiController
     {
-        private saitynasEntities1 db = new saitynasEntities1();
+        private saitynasEntities2 db = new saitynasEntities2();
 
         // GET: api/Teams
         public IEnumerable<team> Getteams()
@@ -24,7 +24,7 @@ namespace Saityno_back_end.Controllers
 
         // GET: api/Teams/5
         [ResponseType(typeof(team))]
-        public IHttpActionResult Getteam(string id)
+        public IHttpActionResult Getteam(int id)
         {
             team team = db.teams.Find(id);
             if (team == null)
@@ -37,14 +37,14 @@ namespace Saityno_back_end.Controllers
 
         // PUT: api/Teams/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult Putteam(string id, team team)
+        public IHttpActionResult Putteam(int id, team team)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != team.name)
+            if (id != team.id)
             {
                 return BadRequest();
             }
@@ -80,29 +80,14 @@ namespace Saityno_back_end.Controllers
             }
 
             db.teams.Add(team);
+            db.SaveChanges();
 
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateException)
-            {
-                if (teamExists(team.name))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtRoute("DefaultApi", new { id = team.name }, team);
+            return CreatedAtRoute("DefaultApi", new { id = team.id }, team);
         }
 
         // DELETE: api/Teams/5
         [ResponseType(typeof(team))]
-        public IHttpActionResult Deleteteam(string id)
+        public IHttpActionResult Deleteteam(int id)
         {
             team team = db.teams.Find(id);
             if (team == null)
@@ -125,9 +110,9 @@ namespace Saityno_back_end.Controllers
             base.Dispose(disposing);
         }
 
-        private bool teamExists(string id)
+        private bool teamExists(int id)
         {
-            return db.teams.Count(e => e.name == id) > 0;
+            return db.teams.Count(e => e.id == id) > 0;
         }
     }
 }

@@ -20,10 +20,11 @@ namespace Saityno_back_end
             this.players = new HashSet<player>();
         }
     
+        public int id { get; set; }
         public string name { get; set; }
         public int wins { get; set; }
         public int defeats { get; set; }
-        public string fk_continent { get; set; }
+        public int fk_continent { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<player> players { get; set; }

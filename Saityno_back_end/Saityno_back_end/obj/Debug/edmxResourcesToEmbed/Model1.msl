@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="saitynasModelStoreContainer" CdmEntityContainer="saitynasEntities1">
+  <EntityContainerMapping StorageEntityContainer="saitynasModelStoreContainer" CdmEntityContainer="saitynasEntities2">
     <EntitySetMapping Name="continents">
       <EntityTypeMapping TypeName="saitynasModel.continent">
         <MappingFragment StoreEntitySet="continents">
+          <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="name" ColumnName="name" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -11,22 +12,44 @@
     <EntitySetMapping Name="players">
       <EntityTypeMapping TypeName="saitynasModel.player">
         <MappingFragment StoreEntitySet="players">
+          <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="username" ColumnName="username" />
           <ScalarProperty Name="first_name" ColumnName="first_name" />
           <ScalarProperty Name="last_name" ColumnName="last_name" />
           <ScalarProperty Name="country" ColumnName="country" />
           <ScalarProperty Name="age" ColumnName="age" />
           <ScalarProperty Name="fk_team" ColumnName="fk_team" />
+          <ScalarProperty Name="fk_rating" ColumnName="fk_rating" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ratings">
+      <EntityTypeMapping TypeName="saitynasModel.rating">
+        <MappingFragment StoreEntitySet="rating">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="times_rated" ColumnName="times_rated" />
+          <ScalarProperty Name="total" ColumnName="total" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="teams">
       <EntityTypeMapping TypeName="saitynasModel.team">
         <MappingFragment StoreEntitySet="teams">
+          <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="wins" ColumnName="wins" />
           <ScalarProperty Name="defeats" ColumnName="defeats" />
           <ScalarProperty Name="fk_continent" ColumnName="fk_continent" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="users">
+      <EntityTypeMapping TypeName="saitynasModel.user">
+        <MappingFragment StoreEntitySet="users">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="userlevel" ColumnName="userlevel" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
