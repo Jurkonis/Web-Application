@@ -14,7 +14,10 @@ class Continent extends Component {
       name: ""
     },
     newContinentModal: false,
-    editContinentModal: false
+    editContinentModal: false,
+    config: {
+      headers: { Authorization: "bearer " + sessionStorage.getItem("token") }
+    }
   };
 
   componentDidMount() {
@@ -28,7 +31,7 @@ class Continent extends Component {
   }
 
   addContinent() {
-    Axios.post("http://localhost:56625/api/Continents", this.state.newContinentData).then(response => {
+    Axios.post("http://localhost:56625/api/Continents", this.state.newContinentData, this.state.config).then(response => {
       let { continents } = this.state;
       continents.push(response.data);
       this.setState({
@@ -56,7 +59,8 @@ class Continent extends Component {
 
   updateContinent() {
     let { id, name } = this.state.editContinentData;
-    Axios.put("http://localhost:56625/api/Continents/" + this.state.editContinentData.id, { id, name }).then(response => {
+    console.log(this.state.config);
+    Axios.put("http://localhost:56625/api/Continents/" + this.state.editContinentData.id, { id, name }, this.state.config).then(response => {
       this._refreshContinents();
       this.setState({
         editContinentModal: false,
@@ -69,7 +73,7 @@ class Continent extends Component {
   }
 
   deleteContinent(id) {
-    Axios.delete("http://localhost:56625/api/Continents/" + id).then(response => {
+    Axios.delete("http://localhost:56625/api/Continents/" + id, this.state.config).then(response => {
       this._refreshContinents();
     });
   }

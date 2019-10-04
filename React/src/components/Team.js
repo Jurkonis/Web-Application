@@ -6,12 +6,12 @@ import Axios from "axios";
 class Team extends Component {
   state = {
     teams: [],
-    continent: {},
+    continents: [],
     newTeamData: {
       name: "",
       wins: "",
       defeats: "",
-      fk_continent: ""
+      fk_continent: "1"
     },
     editTeamData: {
       id: "",
@@ -25,6 +25,11 @@ class Team extends Component {
   };
 
   componentDidMount() {
+    Axios.get("http://localhost:56625/api/continents").then(response => {
+      this.setState({
+        continents: response.data
+      });
+    });
     this._refreshTeams();
   }
 
@@ -35,6 +40,7 @@ class Team extends Component {
   }
 
   addTeam() {
+    console.log(this.state.newTeamData);
     Axios.post("http://localhost:56625/api/Teams", this.state.newTeamData).then(response => {
       let { teams } = this.state;
       teams.push(response.data);
@@ -45,7 +51,7 @@ class Team extends Component {
           name: "",
           wins: "",
           defeats: "",
-          fk_continent: ""
+          fk_continent: "1"
         }
       });
     });
@@ -82,7 +88,7 @@ class Team extends Component {
   }
 
   deleteTeam(id) {
-    Axios.get("http://localhost:56625/api/Teams/" + id).then(response => {
+    Axios.delete("http://localhost:56625/api/Teams/" + id).then(response => {
       this._refreshTeams();
     });
   }
@@ -159,14 +165,22 @@ class Team extends Component {
               />
               <Label for="fk_continent">Continent</Label>
               <Input
+                type="select"
                 id="fk_continent"
-                value={this.state.newTeamData.fk_continent}
                 onChange={e => {
                   let { newTeamData } = this.state;
                   newTeamData.fk_continent = e.target.value;
                   this.setState({ newTeamData });
                 }}
-              />
+              >
+                {this.state.continents.map(continent => {
+                  return (
+                    <option key={continent.id} value={continent.id}>
+                      {continent.name}
+                    </option>
+                  );
+                })}
+              </Input>
             </FormGroup>
           </ModalBody>
           <ModalFooter>
@@ -215,6 +229,7 @@ class Team extends Component {
               />
               <Label for="fk_continent">Continent</Label>
               <Input
+                type="select"
                 id="fk_continent"
                 value={this.state.editTeamData.fk_continent}
                 onChange={e => {
@@ -222,7 +237,15 @@ class Team extends Component {
                   editTeamData.fk_continent = e.target.value;
                   this.setState({ editTeamData });
                 }}
-              />
+              >
+                {this.state.continents.map(continent => {
+                  return (
+                    <option key={continent.id} value={continent.id}>
+                      {continent.name}
+                    </option>
+                  );
+                })}
+              </Input>
             </FormGroup>
           </ModalBody>
           <ModalFooter>

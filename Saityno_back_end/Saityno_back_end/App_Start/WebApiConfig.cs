@@ -11,9 +11,6 @@ namespace Saityno_back_end
 	{
 		public static void Register(HttpConfiguration config)
 		{
-			//Enable CORS
-
-			config.EnableCors(new EnableCorsAttribute("http://localhost:3000",headers:"*",methods:"*"));
 
 			// Web API configuration and services
 

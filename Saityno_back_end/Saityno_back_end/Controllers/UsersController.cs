@@ -18,9 +18,9 @@ namespace Saityno_back_end.Controllers
 
         // GET: api/Users/5
         [ResponseType(typeof(user))]
-        public IHttpActionResult Getuser(int id)
+        public IHttpActionResult Getuser(user u)
         {
-            user user = db.users.Find(id);
+            user user = db.users.FirstOrDefault(a=>a.username== u.username && a.password== u.password);
             if (user == null)
             {
                 return NotFound();
@@ -29,8 +29,9 @@ namespace Saityno_back_end.Controllers
             return Ok(user);
         }
 
-        // PUT: api/Users/5
-        [ResponseType(typeof(void))]
+		[Authorize]
+		// PUT: api/Users/5
+		[ResponseType(typeof(void))]
         public IHttpActionResult Putuser(int id, user user)
         {
             if (!ModelState.IsValid)
@@ -63,7 +64,7 @@ namespace Saityno_back_end.Controllers
 
             return StatusCode(HttpStatusCode.NoContent);
         }
-
+		
         // POST: api/Users
         [ResponseType(typeof(user))]
         public IHttpActionResult Postuser(user user)
@@ -77,22 +78,6 @@ namespace Saityno_back_end.Controllers
             db.SaveChanges();
 
             return CreatedAtRoute("DefaultApi", new { id = user.id }, user);
-        }
-
-        // DELETE: api/Users/5
-        [ResponseType(typeof(user))]
-        public IHttpActionResult Deleteuser(int id)
-        {
-            user user = db.users.Find(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            db.users.Remove(user);
-            db.SaveChanges();
-
-            return Ok(user);
         }
 
         protected override void Dispose(bool disposing)
