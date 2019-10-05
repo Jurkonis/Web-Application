@@ -6,6 +6,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Saityno_back_end;
@@ -16,16 +17,17 @@ namespace Saityno_back_end.Controllers
     {
         private saitynasEntities2 db = new saitynasEntities2();
 
-        // GET: api/Users/5
-        [ResponseType(typeof(user))]
-        public IHttpActionResult Getuser(user u)
+		[Authorize]
+		[ResponseType(typeof(user))]
+        public IHttpActionResult Getuser()
         {
-            user user = db.users.FirstOrDefault(a=>a.username== u.username && a.password== u.password);
+			var identity = (ClaimsIdentity)User.Identity;
+			user user = db.users.FirstOrDefault(a=>a.username==identity.Name);
             if (user == null)
             {
                 return NotFound();
             }
-
+			user.password = null;
             return Ok(user);
         }
 

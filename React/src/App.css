@@ -1,3 +1,14 @@
+* {
+  font-family: "Poppins", sans-serif;
+}
 .cursor-pointer {
   cursor: pointer;
+}
+.image {
+  width: 50%;
+  min-width: 150px;
+}
+.social-icon {
+  width: 40px;
+  height: 40px;
 }

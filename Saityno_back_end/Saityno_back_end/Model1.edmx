@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="saitynasModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="8.0" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="saitynasModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="8.0" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="continents">
           <Key>
             <PropertyRef Name="id" />
@@ -29,7 +29,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" />
           <Property Name="times_rated" Type="int" Nullable="false" />
           <Property Name="total" Type="int" Nullable="false" />
         </EntityType>
@@ -107,8 +107,7 @@
             <End Role="teams" EntitySet="teams" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="saitynasModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -132,15 +131,7 @@
           <Property Name="age" Type="Int32" Nullable="false" />
           <Property Name="fk_team" Type="Int32" Nullable="false" />
           <Property Name="fk_rating" Type="Int32" />
-          <NavigationProperty Name="rating" Relationship="Self.belongs1" FromRole="players" ToRole="rating" />
-        </EntityType>
-        <EntityType Name="rating">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="times_rated" Type="Int32" Nullable="false" />
-          <Property Name="total" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="rating" Relationship="saitynasModel.belongs1" FromRole="player" ToRole="rating" />
         </EntityType>
         <EntityType Name="team">
           <Key>
@@ -186,22 +177,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="belongs1">
-          <End Role="rating" Type="Self.rating" Multiplicity="0..1" />
-          <End Role="players" Type="Self.player" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="rating">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="players">
-              <PropertyRef Name="fk_rating" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="saitynasEntities2" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="continents" EntityType="Self.continent" />
           <EntitySet Name="players" EntityType="Self.player" />
-          <EntitySet Name="ratings" EntityType="Self.rating" />
           <EntitySet Name="teams" EntityType="Self.team" />
           <EntitySet Name="users" EntityType="Self.user" />
           <AssociationSet Name="belongs2" Association="Self.belongs2">
@@ -212,11 +190,32 @@
             <End Role="teams" EntitySet="teams" />
             <End Role="players" EntitySet="players" />
           </AssociationSet>
-          <AssociationSet Name="belongs1" Association="Self.belongs1">
+          <EntitySet Name="ratings" EntityType="saitynasModel.rating" />
+          <AssociationSet Name="belongs1" Association="saitynasModel.belongs1">
             <End Role="rating" EntitySet="ratings" />
-            <End Role="players" EntitySet="players" />
+            <End Role="player" EntitySet="players" />
           </AssociationSet>
         </EntityContainer>
+        <EntityType Name="rating">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="times_rated" Type="Int32" Nullable="false" />
+          <Property Name="total" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="belongs1">
+          <End Type="saitynasModel.rating" Role="rating" Multiplicity="0..1" />
+          <End Type="saitynasModel.player" Role="player" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="rating">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="player">
+              <PropertyRef Name="fk_rating" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -245,15 +244,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ratings">
-            <EntityTypeMapping TypeName="saitynasModel.rating">
-              <MappingFragment StoreEntitySet="rating">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="times_rated" ColumnName="times_rated" />
-                <ScalarProperty Name="total" ColumnName="total" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="teams">
             <EntityTypeMapping TypeName="saitynasModel.team">
               <MappingFragment StoreEntitySet="teams">
@@ -272,6 +262,15 @@
                 <ScalarProperty Name="username" ColumnName="username" />
                 <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="userlevel" ColumnName="userlevel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ratings">
+            <EntityTypeMapping TypeName="saitynasModel.rating">
+              <MappingFragment StoreEntitySet="rating">
+                <ScalarProperty Name="total" ColumnName="total" />
+                <ScalarProperty Name="times_rated" ColumnName="times_rated" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

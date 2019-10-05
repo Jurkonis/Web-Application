@@ -59,7 +59,6 @@ class Continent extends Component {
 
   updateContinent() {
     let { id, name } = this.state.editContinentData;
-    console.log(this.state.config);
     Axios.put("http://localhost:56625/api/Continents/" + this.state.editContinentData.id, { id, name }, this.state.config).then(response => {
       this._refreshContinents();
       this.setState({
@@ -94,22 +93,26 @@ class Continent extends Component {
               {continent.name.replace("_", " ")}
             </Link>
           </td>
-          <td>
-            <Button color="success" size="sm" className="mr-2" onClick={this.editContinent.bind(this, continent.id, continent.name)}>
-              Edit
-            </Button>
-            <Button color="danger" size="sm" onClick={this.deleteContinent.bind(this, continent.id)}>
-              Delete
-            </Button>
-          </td>
+          {sessionStorage.getItem("userLevel") == 3 ? (
+            <td>
+              <Button color="success" size="sm" className="mr-2" onClick={this.editContinent.bind(this, continent.id, continent.name)}>
+                Edit
+              </Button>
+              <Button color="danger" size="sm" onClick={this.deleteContinent.bind(this, continent.id)}>
+                Delete
+              </Button>
+            </td>
+          ) : null}
         </tr>
       );
     });
     return (
       <div className="App container">
-        <Button className="my-3" color="primary" onClick={this.toggleNewContinentModal.bind(this)}>
-          Add Continent
-        </Button>
+        {sessionStorage.getItem("userLevel") == 3 ? (
+          <Button className="my-3" color="primary" onClick={this.toggleNewContinentModal.bind(this)}>
+            Add Continent
+          </Button>
+        ) : null}
 
         <Modal isOpen={this.state.newContinentModal} toggle={this.toggleNewContinentModal.bind(this)}>
           <ModalHeader toggle={this.toggleNewContinentModal.bind(this)}>Add a new continent</ModalHeader>
@@ -167,7 +170,7 @@ class Continent extends Component {
           <thead>
             <tr>
               <th>Name</th>
-              <th>Actions</th>
+              {sessionStorage.getItem("userLevel") == 3 ? <th>Actions</th> : null}
             </tr>
           </thead>
           <tbody>{continents}</tbody>

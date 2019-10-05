@@ -23,15 +23,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="ratings">
-      <EntityTypeMapping TypeName="saitynasModel.rating">
-        <MappingFragment StoreEntitySet="rating">
-          <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="times_rated" ColumnName="times_rated" />
-          <ScalarProperty Name="total" ColumnName="total" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="teams">
       <EntityTypeMapping TypeName="saitynasModel.team">
         <MappingFragment StoreEntitySet="teams">
@@ -50,6 +41,15 @@
           <ScalarProperty Name="username" ColumnName="username" />
           <ScalarProperty Name="password" ColumnName="password" />
           <ScalarProperty Name="userlevel" ColumnName="userlevel" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ratings">
+      <EntityTypeMapping TypeName="saitynasModel.rating">
+        <MappingFragment StoreEntitySet="rating">
+          <ScalarProperty Name="total" ColumnName="total" />
+          <ScalarProperty Name="times_rated" ColumnName="times_rated" />
+          <ScalarProperty Name="id" ColumnName="id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

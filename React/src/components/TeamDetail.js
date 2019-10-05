@@ -25,7 +25,10 @@ export default class TeamDetail extends Component {
       fk_team: this.props.match.params.tid
     },
     newPlayerModal: false,
-    editPlayerModal: false
+    editPlayerModal: false,
+    config: {
+      headers: { Authorization: "bearer " + sessionStorage.getItem("token") }
+    }
   };
 
   componentDidMount() {
@@ -38,24 +41,26 @@ export default class TeamDetail extends Component {
   }
 
   addPlayer() {
-    Axios.post("http://localhost:56625/api/continents/" + this.props.match.params.cid + "/teams/" + this.props.match.params.tid + "/Players", this.state.newPlayerData).then(
-      response => {
-        let { players } = this.state.team;
-        players.push(response.data);
-        this.setState({
-          players,
-          newPlayerModal: false,
-          newPlayerData: {
-            username: "",
-            first_name: "",
-            last_name: "",
-            country: "",
-            age: "",
-            fk_team: this.props.match.params.tid
-          }
-        });
-      }
-    );
+    Axios.post(
+      "http://localhost:56625/api/continents/" + this.props.match.params.cid + "/teams/" + this.props.match.params.tid + "/Players",
+      this.state.newPlayerData,
+      this.state.config
+    ).then(response => {
+      let { players } = this.state.team;
+      players.push(response.data);
+      this.setState({
+        players,
+        newPlayerModal: false,
+        newPlayerData: {
+          username: "",
+          first_name: "",
+          last_name: "",
+          country: "",
+          age: "",
+          fk_team: this.props.match.params.tid
+        }
+      });
+    });
   }
 
   editPlayer(id, username, first_name, last_name, country, age, fk_rating, fk_team) {
@@ -73,17 +78,20 @@ export default class TeamDetail extends Component {
 
   updatePlayer() {
     let { id, username, first_name, last_name, country, age, fk_rating, fk_team } = this.state.editPlayerData;
-    console.log(this.state.editPlayerData);
-    Axios.put("http://localhost:56625/api/continents/" + this.props.match.params.cid + "/teams/" + this.props.match.params.tid + "/Players/" + this.state.editPlayerData.id, {
-      id,
-      username,
-      first_name,
-      last_name,
-      country,
-      age,
-      fk_rating,
-      fk_team
-    }).then(response => {
+    Axios.put(
+      "http://localhost:56625/api/continents/" + this.props.match.params.cid + "/teams/" + this.props.match.params.tid + "/Players/" + this.state.editPlayerData.id,
+      {
+        id,
+        username,
+        first_name,
+        last_name,
+        country,
+        age,
+        fk_rating,
+        fk_team
+      },
+      this.state.config
+    ).then(response => {
       this._refreshTeam();
       this.setState({
         editPlayerModal: false,
@@ -102,9 +110,11 @@ export default class TeamDetail extends Component {
   }
 
   deletePlayer(id) {
-    Axios.delete("http://localhost:56625/api/continents/" + this.props.match.params.cid + "/teams/" + this.props.match.params.tid + "/Players/" + id).then(response => {
-      this._refreshTeam();
-    });
+    Axios.delete("http://localhost:56625/api/continents/" + this.props.match.params.cid + "/teams/" + this.props.match.params.tid + "/Players/" + id, this.state.config).then(
+      response => {
+        this._refreshTeam();
+      }
+    );
   }
 
   _refreshTeam() {
@@ -127,29 +137,32 @@ export default class TeamDetail extends Component {
           <td>{player.last_name}</td>
           <td>{player.age}</td>
           <td>{player.country}</td>
-          <td>
-            <Button
-              color="success"
-              size="sm"
-              className="mr-2"
-              onClick={this.editPlayer.bind(this, player.id, player.username, player.first_name, player.last_name, player.country, player.age, player.fk_rating, player.fk_team)}
-            >
-              Edit
-            </Button>
-            <Button color="danger" size="sm" onClick={this.deletePlayer.bind(this, player.id)}>
-              Delete
-            </Button>
-          </td>
+          {sessionStorage.getItem("userLevel") == 3 || sessionStorage.getItem("userLevel") == 2 ? (
+            <td>
+              <Button
+                color="success"
+                size="sm"
+                className="mr-2"
+                onClick={this.editPlayer.bind(this, player.id, player.username, player.first_name, player.last_name, player.country, player.age, player.fk_rating, player.fk_team)}
+              >
+                Edit
+              </Button>
+              <Button color="danger" size="sm" onClick={this.deletePlayer.bind(this, player.id)}>
+                Delete
+              </Button>
+            </td>
+          ) : null}
         </tr>
       );
     });
     return (
       <div className="App container">
         <h2>{this.state.team.name}</h2>
-        <Button className="my-3" color="primary" onClick={this.toggleNewPlayerModal.bind(this)}>
-          Add Player
-        </Button>
-
+        {sessionStorage.getItem("userLevel") == 3 || sessionStorage.getItem("userLevel") == 2 ? (
+          <Button className="my-3" color="primary" onClick={this.toggleNewPlayerModal.bind(this)}>
+            Add Player
+          </Button>
+        ) : null}
         <Modal isOpen={this.state.newPlayerModal} toggle={this.toggleNewPlayerModal.bind(this)}>
           <ModalHeader toggle={this.toggleNewPlayerModal.bind(this)}>Add a new Player</ModalHeader>
           <ModalBody>
@@ -290,7 +303,7 @@ export default class TeamDetail extends Component {
                 <th>Last name</th>
                 <th>Age</th>
                 <th>Country</th>
-                <th>Actions</th>
+                {sessionStorage.getItem("userLevel") == 3 || sessionStorage.getItem("userLevel") == 2 ? <th>Actions</th> : null}
               </tr>
             </thead>
             <tbody>{players}</tbody>

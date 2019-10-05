@@ -23,7 +23,8 @@ class Nav extends Component {
         grant_type: "password"
       },
       newUserModal: false,
-      loginModal: false
+      loginModal: false,
+      Authorization: ""
     };
   }
   toggleNewUserModal() {
@@ -49,15 +50,23 @@ class Nav extends Component {
         "Postman-Token": "42e6c291-9a09-c29f-f28f-11872e2490a5"
       }
     }).then(response => {
-      sessionStorage.removeItem("token");
+      sessionStorage.clear();
       sessionStorage.setItem("token", response.data.access_token);
       this.setState({
         loginModal: false
       });
-      window.location.href = "/";
+      Axios.get("http://localhost:56625/api/users", { headers: { Authorization: "bearer " + response.data.access_token } }).then(response => {
+        sessionStorage.setItem("id", response.data.id);
+        sessionStorage.setItem("username", response.data.username);
+        sessionStorage.setItem("userLevel", response.data.userlevel);
+        window.location.href = "/";
+      });
     });
   }
-  logout() {}
+  logout() {
+    sessionStorage.clear();
+    window.location.href = "/";
+  }
   register() {
     Axios.post("http://localhost:56625/api/users", this.state.newUserData).then(response => {
       this.setState({
@@ -79,6 +88,22 @@ class Nav extends Component {
     const collapsed = this.state.collapsed;
     const classOne = collapsed ? "collapse navbar-collapse" : "collapse navbar-collapse show";
     const classTwo = collapsed ? "navbar-toggler navbar-toggler-right collapsed" : "navbar-toggler navbar-toggler-right";
+
+    let button;
+    if (sessionStorage.getItem("token")) {
+      button = (
+        <li className="nav-link cursor-pointer" onClick={this.logout.bind(this)}>
+          Logout
+        </li>
+      );
+    } else {
+      button = (
+        <li className="nav-link cursor-pointer" size="sm" onClick={this.toggleLoginModal.bind(this)}>
+          Login
+        </li>
+      );
+    }
+
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark transparent-nav">
         <div className="container">
@@ -189,15 +214,14 @@ class Nav extends Component {
                   Players
                 </Link>
               </li>
-              <li className="nav-link cursor-pointer" size="sm" onClick={this.toggleLoginModal.bind(this)}>
-                Login
-              </li>
-              <li className="nav-link cursor-pointer" onClick={this.toggleNewUserModal.bind(this)}>
-                Register
-              </li>
-              <li className="nav-link cursor-pointer" onClick={this.logout.bind(this)}>
-                Logout
-              </li>
+              {button}
+              {!sessionStorage.getItem("token") ? (
+                <li className="nav-link cursor-pointer" size="sm" onClick={this.toggleLoginModal.bind(this)}>
+                  Register
+                </li>
+              ) : (
+                ""
+              )}
             </ul>
           </div>
         </div>

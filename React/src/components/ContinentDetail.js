@@ -20,7 +20,10 @@ export default class ContinentDetail extends Component {
       fk_continent: this.props.match.params.cid
     },
     newTeamModal: false,
-    editTeamModal: false
+    editTeamModal: false,
+    config: {
+      headers: { Authorization: "bearer " + sessionStorage.getItem("token") }
+    }
   };
 
   componentDidMount() {
@@ -33,8 +36,7 @@ export default class ContinentDetail extends Component {
   }
 
   addTeam() {
-    console.log(this.state.newTeamData);
-    Axios.post("http://localhost:56625/api/continents/" + this.props.match.params.cid + "/teams", this.state.newTeamData).then(response => {
+    Axios.post("http://localhost:56625/api/continents/" + this.props.match.params.cid + "/teams", this.state.newTeamData, this.state.config).then(response => {
       let { teams } = this.state.continent;
       teams.push(response.data);
       this.setState({
@@ -65,25 +67,27 @@ export default class ContinentDetail extends Component {
 
   updateTeam() {
     let { id, name, wins, defeats, fk_continent } = this.state.editTeamData;
-    Axios.put("http://localhost:56625/api/continents/" + this.props.match.params.cid + "/teams/" + this.state.editTeamData.id, { id, name, wins, defeats, fk_continent }).then(
-      response => {
-        this._refreshContinent();
-        this.setState({
-          editTeamModal: false,
-          editTeamData: {
-            id: "",
-            name: "",
-            wins: "",
-            defeats: "",
-            fk_continent: ""
-          }
-        });
-      }
-    );
+    Axios.put(
+      "http://localhost:56625/api/continents/" + this.props.match.params.cid + "/teams/" + this.state.editTeamData.id,
+      { id, name, wins, defeats, fk_continent },
+      this.state.config
+    ).then(response => {
+      this._refreshContinent();
+      this.setState({
+        editTeamModal: false,
+        editTeamData: {
+          id: "",
+          name: "",
+          wins: "",
+          defeats: "",
+          fk_continent: ""
+        }
+      });
+    });
   }
 
   deleteTeam(id) {
-    Axios.delete("http://localhost:56625/api/continents/" + this.props.match.params.cid + "/teams/" + id).then(response => {
+    Axios.delete("http://localhost:56625/api/continents/" + this.props.match.params.cid + "/teams/" + id, this.state.config).then(response => {
       this._refreshContinent();
     });
   }
@@ -106,23 +110,27 @@ export default class ContinentDetail extends Component {
           </td>
           <td>{team.wins}</td>
           <td>{team.defeats}</td>
-          <td>
-            <Button color="success" size="sm" className="mr-2" onClick={this.editTeam.bind(this, team.id, team.name, team.wins, team.defeats, team.fk_continent)}>
-              Edit
-            </Button>
-            <Button color="danger" size="sm" onClick={this.deleteTeam.bind(this, team.id)}>
-              Delete
-            </Button>
-          </td>
+          {sessionStorage.getItem("userLevel") == 3 || sessionStorage.getItem("userLevel") == 2 ? (
+            <td>
+              <Button color="success" size="sm" className="mr-2" onClick={this.editTeam.bind(this, team.id, team.name, team.wins, team.defeats, team.fk_continent)}>
+                Edit
+              </Button>
+              <Button color="danger" size="sm" onClick={this.deleteTeam.bind(this, team.id)}>
+                Delete
+              </Button>
+            </td>
+          ) : null}
         </tr>
       );
     });
     return (
       <div className="App container">
         <h2>{this.state.continent.name}</h2>
-        <Button className="my-3" color="primary" onClick={this.toggleNewTeamModal.bind(this)}>
-          Add Team
-        </Button>
+        {sessionStorage.getItem("userLevel") == 3 || sessionStorage.getItem("userLevel") == 2 ? (
+          <Button className="my-3" color="primary" onClick={this.toggleNewTeamModal.bind(this)}>
+            Add Team
+          </Button>
+        ) : null}
 
         <Modal isOpen={this.state.newTeamModal} toggle={this.toggleNewTeamModal.bind(this)}>
           <ModalHeader toggle={this.toggleNewTeamModal.bind(this)}>Add a new team</ModalHeader>
@@ -222,7 +230,7 @@ export default class ContinentDetail extends Component {
                 <th>Name</th>
                 <th>Wins</th>
                 <th>Defeats</th>
-                <th>Actions</th>
+                {sessionStorage.getItem("userLevel") == 3 || sessionStorage.getItem("userLevel") == 2 ? <th>Actions</th> : null}
               </tr>
             </thead>
             <tbody>{teams}</tbody>

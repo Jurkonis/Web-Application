@@ -27,8 +27,8 @@ namespace Saityno_back_end
     
         public virtual DbSet<continent> continents { get; set; }
         public virtual DbSet<player> players { get; set; }
-        public virtual DbSet<rating> ratings { get; set; }
         public virtual DbSet<team> teams { get; set; }
         public virtual DbSet<user> users { get; set; }
+        public virtual DbSet<rating> ratings { get; set; }
     }
 }

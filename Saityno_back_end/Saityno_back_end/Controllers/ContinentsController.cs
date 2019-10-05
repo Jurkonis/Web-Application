@@ -93,6 +93,20 @@ namespace Saityno_back_end.Controllers
 				return NotFound();
 			}
 
+			for (int j = continent.teams.Count; j > 0; j--)
+			{
+				team team = continent.teams.Last();
+				for (int i = team.players.Count; i > 0; i--)
+				{
+					player player = team.players.Last();
+					if (player.rating != null)
+						db.ratings.Remove(player.rating);
+					db.players.Remove(player);
+					db.SaveChanges();
+				}
+				db.teams.Remove(team);
+				db.SaveChanges();
+			}
 			db.continents.Remove(continent);
 			db.SaveChanges();
 
@@ -174,7 +188,14 @@ namespace Saityno_back_end.Controllers
 			{
 				return NotFound();
 			}
-
+			for(int i=team.players.Count;i>0; i--)
+			{
+				player player = team.players.Last();
+				if(player.rating!=null)
+					db.ratings.Remove(player.rating);
+				db.players.Remove(player);
+				db.SaveChanges();
+			}
 			db.teams.Remove(team);
 			db.SaveChanges();
 
@@ -335,7 +356,7 @@ namespace Saityno_back_end.Controllers
 			{
 				return NotFound();
 			}
-
+			
 			db.players.Remove(player);
 			db.SaveChanges();
 

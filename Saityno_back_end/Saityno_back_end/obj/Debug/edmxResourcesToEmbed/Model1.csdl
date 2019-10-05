@@ -20,15 +20,7 @@
     <Property Name="age" Type="Int32" Nullable="false" />
     <Property Name="fk_team" Type="Int32" Nullable="false" />
     <Property Name="fk_rating" Type="Int32" />
-    <NavigationProperty Name="rating" Relationship="Self.belongs1" FromRole="players" ToRole="rating" />
-  </EntityType>
-  <EntityType Name="rating">
-    <Key>
-      <PropertyRef Name="id" />
-    </Key>
-    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="times_rated" Type="Int32" Nullable="false" />
-    <Property Name="total" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="rating" Relationship="saitynasModel.belongs1" FromRole="player" ToRole="rating" />
   </EntityType>
   <EntityType Name="team">
     <Key>
@@ -74,22 +66,9 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="belongs1">
-    <End Role="rating" Type="Self.rating" Multiplicity="0..1" />
-    <End Role="players" Type="Self.player" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="rating">
-        <PropertyRef Name="id" />
-      </Principal>
-      <Dependent Role="players">
-        <PropertyRef Name="fk_rating" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <EntityContainer Name="saitynasEntities2" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="continents" EntityType="Self.continent" />
     <EntitySet Name="players" EntityType="Self.player" />
-    <EntitySet Name="ratings" EntityType="Self.rating" />
     <EntitySet Name="teams" EntityType="Self.team" />
     <EntitySet Name="users" EntityType="Self.user" />
     <AssociationSet Name="belongs2" Association="Self.belongs2">
@@ -100,9 +79,30 @@
       <End Role="teams" EntitySet="teams" />
       <End Role="players" EntitySet="players" />
     </AssociationSet>
-    <AssociationSet Name="belongs1" Association="Self.belongs1">
+    <EntitySet Name="ratings" EntityType="saitynasModel.rating" />
+    <AssociationSet Name="belongs1" Association="saitynasModel.belongs1">
       <End Role="rating" EntitySet="ratings" />
-      <End Role="players" EntitySet="players" />
+      <End Role="player" EntitySet="players" />
     </AssociationSet>
   </EntityContainer>
+  <EntityType Name="rating">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="times_rated" Type="Int32" Nullable="false" />
+    <Property Name="total" Type="Int32" Nullable="false" />
+  </EntityType>
+  <Association Name="belongs1">
+    <End Type="saitynasModel.rating" Role="rating" Multiplicity="0..1" />
+    <End Type="saitynasModel.player" Role="player" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="rating">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="player">
+        <PropertyRef Name="fk_rating" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>
