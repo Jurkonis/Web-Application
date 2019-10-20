@@ -171,7 +171,7 @@ export default class TeamDetail extends Component {
 
         <div className="row">
           <div className="col-sm mw-25">
-            <img src={require("../images/logo192.png")} className="float-right image" alt="" />
+            <img src={require("../images/avatar.png")} className="float-right image" alt="" />
           </div>
           <div className="col-sm">
             <div className="row">
