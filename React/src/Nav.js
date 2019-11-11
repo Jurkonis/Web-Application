@@ -216,7 +216,7 @@ class Nav extends Component {
               </li>
               {button}
               {!sessionStorage.getItem("token") ? (
-                <li className="nav-link cursor-pointer" size="sm" onClick={this.toggleLoginModal.bind(this)}>
+                <li className="nav-link cursor-pointer" size="sm" onClick={this.toggleNewUserModal.bind(this)}>
                   Register
                 </li>
               ) : (

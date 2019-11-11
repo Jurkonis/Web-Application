@@ -16,8 +16,12 @@ namespace Saityno_back_end.Controllers
     {
         private saitynasEntities2 db = new saitynasEntities2();
 
+		public IEnumerable<rating> Getratings()
+		{
+			return db.ratings.ToList(); ;
+		}
 
-        [ResponseType(typeof(rating))]
+		[ResponseType(typeof(rating))]
         public IHttpActionResult Getrating(int id)
         {
             rating rating = db.ratings.Find(id);

@@ -13,87 +13,95 @@ using Saityno_back_end;
 
 namespace Saityno_back_end.Controllers
 {
-    public class UsersController : ApiController
-    {
-        private saitynasEntities2 db = new saitynasEntities2();
+	public class UsersController : ApiController
+	{
+
+		private saitynasEntities2 db = new saitynasEntities2();
 
 		[Authorize]
 		[ResponseType(typeof(user))]
-        public IHttpActionResult Getuser()
-        {
+		public IHttpActionResult Getuser()
+		{
 			var identity = (ClaimsIdentity)User.Identity;
 			user user = db.users.FirstOrDefault(a=>a.username==identity.Name);
-            if (user == null)
-            {
-                return NotFound();
-            }
+			if (user == null)
+			{
+				return NotFound();
+			}
 			user.password = null;
-            return Ok(user);
-        }
+			return Ok(user);
+		}
 
 		[Authorize]
 		// PUT: api/Users/5
 		[ResponseType(typeof(void))]
-        public IHttpActionResult Putuser(int id, user user)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+		public IHttpActionResult Putuser(int id, user user)
+		{
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
 
-            if (id != user.id)
-            {
-                return BadRequest();
-            }
+			if (id != user.id)
+			{
+				return BadRequest();
+			}
 
-            db.Entry(user).State = EntityState.Modified;
 
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!userExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+			db.Entry(user).State = EntityState.Modified;
 
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-		
-        // POST: api/Users
-        [ResponseType(typeof(user))]
-        public IHttpActionResult Postuser(user user)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+			if (!userExists(id))
+			{
+				return NotFound();
+			}
+			else
+			{
+				db.SaveChanges();
+			}
 
-            db.users.Add(user);
-            db.SaveChanges();
+			return StatusCode(HttpStatusCode.NoContent);
+		}
 
-            return CreatedAtRoute("DefaultApi", new { id = user.id }, user);
-        }
+		[Authorize(Roles = "admin,manager")]
+		[ResponseType(typeof(user))]
+		public IHttpActionResult Deleteuser(int id)
+		{
+			user user = db.users.Find(id);
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+			if (user == null)
+			{
+				return NotFound();
+			}
 
-        private bool userExists(int id)
-        {
-            return db.users.Count(e => e.id == id) > 0;
-        }
-    }
+
+			db.users.Remove(user);
+			db.SaveChanges();
+
+			user.password = null;
+
+			return Ok(user);
+		}
+
+		// POST: api/Users
+		[ResponseType(typeof(user))]
+		public IHttpActionResult Postuser(user user)
+		{
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
+
+			db.users.Add(user);
+			db.SaveChanges();
+
+			user.password = null;
+
+			return Ok(user);
+		}
+
+		private bool userExists(int id)
+		{
+			return db.users.Count(e => e.id == id) > 0;
+		}
+	}
 }

@@ -15,12 +15,12 @@ namespace Saityno_back_end.Controllers
 	public class ContinentsController : ApiController
 	{
 		private saitynasEntities2 db = new saitynasEntities2();
-		
+
 		public IEnumerable<continent> Getcontinents()
 		{
-			return db.continents.ToList(); ;
+			return db.continents.ToList();
 		}
-		
+
 		[ResponseType(typeof(continent))]
 		public IHttpActionResult Getcontinent(int id)
 		{
@@ -150,7 +150,7 @@ namespace Saityno_back_end.Controllers
 		[Authorize(Roles = "admin,manager")]
 		[Route("api/continents/{id}/teams")]
 		[ResponseType(typeof(team))]
-		public IHttpActionResult Postteam(int id,team team)
+		public IHttpActionResult Postteam(int id, team team)
 		{
 			continent continent = db.continents.Find(id);
 			if (continent == null)
@@ -171,7 +171,7 @@ namespace Saityno_back_end.Controllers
 		[Authorize(Roles = "admin,manager")]
 		[Route("api/continents/{id}/teams/{tid}")]
 		[ResponseType(typeof(team))]
-		public IHttpActionResult Deleteteam(int id,int tid)
+		public IHttpActionResult Deleteteam(int id, int tid)
 		{
 			continent continent = db.continents.Find(id);
 			if (continent == null)
@@ -188,10 +188,10 @@ namespace Saityno_back_end.Controllers
 			{
 				return NotFound();
 			}
-			for(int i=team.players.Count;i>0; i--)
+			for (int i = team.players.Count; i > 0; i--)
 			{
 				player player = team.players.Last();
-				if(player.rating!=null)
+				if (player.rating != null)
 					db.ratings.Remove(player.rating);
 				db.players.Remove(player);
 				db.SaveChanges();
@@ -205,7 +205,7 @@ namespace Saityno_back_end.Controllers
 		[Authorize(Roles = "admin,manager")]
 		[Route("api/continents/{id}/teams/{tid}")]
 		[ResponseType(typeof(void))]
-		public IHttpActionResult Putteam(int id,int tid, team team)
+		public IHttpActionResult Putteam(int id, int tid, team team)
 		{
 
 			if (!ModelState.IsValid)
@@ -245,10 +245,10 @@ namespace Saityno_back_end.Controllers
 			return StatusCode(HttpStatusCode.NoContent);
 		}
 		//--------------------------------------- Player api
-		
+
 		[ResponseType(typeof(player))]
 		[Route("api/continents/{id}/teams/{tid}/players")]
-		public IHttpActionResult Getplayers(int id,int tid)
+		public IHttpActionResult Getplayers(int id, int tid)
 		{
 			continent continent = db.continents.Find(id);
 			if (continent == null)
@@ -269,7 +269,7 @@ namespace Saityno_back_end.Controllers
 
 		[Route("api/continents/{id}/teams/{tid}/players/{pid}")]
 		[ResponseType(typeof(player))]
-		public IHttpActionResult Getplayer(int id,int tid,int pid)
+		public IHttpActionResult Getplayer(int id, int tid, int pid)
 		{
 			continent continent = db.continents.Find(id);
 			if (continent == null)
@@ -300,7 +300,7 @@ namespace Saityno_back_end.Controllers
 		[Authorize(Roles = "admin,manager")]
 		[Route("api/continents/{id}/teams/{tid}/players")]
 		[ResponseType(typeof(player))]
-		public IHttpActionResult Postplayer(int id, int tid,player player)
+		public IHttpActionResult Postplayer(int id, int tid, player player)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -331,7 +331,7 @@ namespace Saityno_back_end.Controllers
 		[Authorize(Roles = "admin,manager")]
 		[Route("api/continents/{id}/teams/{tid}/players/{pid}")]
 		[ResponseType(typeof(player))]
-		public IHttpActionResult Deleteplayer(int id,int tid, int pid)
+		public IHttpActionResult Deleteplayer(int id, int tid, int pid)
 		{
 			continent continent = db.continents.Find(id);
 			if (continent == null)
@@ -356,7 +356,7 @@ namespace Saityno_back_end.Controllers
 			{
 				return NotFound();
 			}
-			
+
 			db.players.Remove(player);
 			db.SaveChanges();
 
@@ -366,7 +366,7 @@ namespace Saityno_back_end.Controllers
 		[Authorize(Roles = "admin,manager")]
 		[Route("api/continents/{id}/teams/{tid}/players/{pid}")]
 		[ResponseType(typeof(void))]
-		public IHttpActionResult Putplayer(int id,int tid, int pid, player player)
+		public IHttpActionResult Putplayer(int id, int tid, int pid, player player)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -398,21 +398,21 @@ namespace Saityno_back_end.Controllers
 
 			return StatusCode(HttpStatusCode.NoContent);
 		}
-		 
-			 
-		protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
 
-        private bool continentExists(int id)
-        {
-            return db.continents.Count(e => e.id == id) > 0;
-        }
+
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				db.Dispose();
+			}
+			base.Dispose(disposing);
+		}
+
+		private bool continentExists(int id)
+		{
+			return db.continents.Count(e => e.id == id) > 0;
+		}
 		private bool teamExists(int id)
 		{
 			return db.teams.Count(e => e.id == id) > 0;

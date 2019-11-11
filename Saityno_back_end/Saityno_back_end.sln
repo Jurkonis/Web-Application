@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.705
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Saityno_back_end", "Saityno_back_end\Saityno_back_end.csproj", "{6988AE74-0536-4EF1-AA41-9AF31A73D1D4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testavimas", "Testavimas\Testavimas.csproj", "{222FA9E2-B004-434D-9404-74ED0CBFD656}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{6988AE74-0536-4EF1-AA41-9AF31A73D1D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6988AE74-0536-4EF1-AA41-9AF31A73D1D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6988AE74-0536-4EF1-AA41-9AF31A73D1D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{222FA9E2-B004-434D-9404-74ED0CBFD656}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{222FA9E2-B004-434D-9404-74ED0CBFD656}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{222FA9E2-B004-434D-9404-74ED0CBFD656}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{222FA9E2-B004-434D-9404-74ED0CBFD656}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

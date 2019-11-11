@@ -13,10 +13,10 @@ namespace Saityno_back_end
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class saitynasEntities2 : DbContext
+    public partial class saitynasEntities2 : DbContext 
     {
         public saitynasEntities2()
-            : base("name=saitynasEntities2")
+            : base("saitynasEntities2")
         {
         }
     

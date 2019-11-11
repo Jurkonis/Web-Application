@@ -141,7 +141,7 @@ class Continent extends Component {
         </Modal>
 
         <Modal isOpen={this.state.editContinentModal} toggle={this.toggleEditContinentModal.bind(this)}>
-          <ModalHeader toggle={this.toggleEditContinentModal.bind(this)}>Edit a continent</ModalHeader>
+          <ModalHeader toggle={this.toggleEditContinentModal.bind(this)}>Edit continent</ModalHeader>
           <ModalBody>
             <FormGroup>
               <Label for="name">Name</Label>
